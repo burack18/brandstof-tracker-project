@@ -1,5 +1,6 @@
 package com.example.brandstoftracker.api;
 
+import com.example.brandstoftracker.api.dto.AutoDto;
 import com.example.brandstoftracker.domain.Auto;
 import com.example.brandstoftracker.service.abstracts.AutoService;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ public class AutoController {
     private final AutoService service;
 
     @GetMapping("/{id}")
-    public Auto getById(@PathVariable Long id){
+    public AutoDto getById(@PathVariable Long id){
         return this.service.getById(id);
     }
 }
