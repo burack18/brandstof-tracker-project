@@ -28,4 +28,8 @@ public class KmHistory {
 
     @Column(name = "date")
     private LocalDate date;
+
+    @ManyToOne
+    @JoinColumn(name = "auto_id")
+    private Auto assignedAuto;
 }

@@ -22,6 +22,21 @@ public class AutoManager implements AutoService {
 
     @Override
     public List<Auto> getAll() {
-        return null;
+        return this.repository.findAll();
+    }
+
+    @Override
+    public Auto add(Auto auto) {
+        return this.repository.save(auto);
+    }
+
+    @Override
+    public Auto update(Auto auto) {
+        return this.repository.save(auto);
+    }
+
+    @Override
+    public void delete(Long autoId) {
+        this.repository.deleteById(autoId);
     }
 }

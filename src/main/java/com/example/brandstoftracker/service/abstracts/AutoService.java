@@ -9,4 +9,7 @@ import java.util.List;
 public interface AutoService {
     AutoDto getById(Long id);
     List<Auto> getAll();
+    Auto add(Auto auto);
+    Auto update(Auto auto);
+    void delete(Long autoId);
 }
