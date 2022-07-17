@@ -1,10 +1,9 @@
-package com.example.brandstoftracker.api.dto.mapper;
+package com.example.brandstoftracker.utilities.mapper;
 
 import com.example.brandstoftracker.api.dto.AutoDto;
 import com.example.brandstoftracker.domain.Auto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
