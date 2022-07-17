@@ -1,23 +1,27 @@
 package com.example.brandstoftracker.service.concrete;
 
 import com.example.brandstoftracker.api.dto.AutoDto;
+import com.example.brandstoftracker.api.dto.mapper.AutoModelMapper;
 import com.example.brandstoftracker.dao.AutoRepository;
 import com.example.brandstoftracker.domain.Auto;
+import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundException;
 import com.example.brandstoftracker.service.abstracts.AutoService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AutoManager implements AutoService {
     private final AutoRepository repository;
+    private final AutoModelMapper modelMapper;
 
     @Override
     public AutoDto getById(Long id) {
-        Auto auto = repository.findById(id).orElse(null);
-        return new AutoDto();
+        Auto auto = repository.findById(id).orElseThrow(()->new NotFoundException("Auto not found"));
+        return modelMapper.convertToDto(auto);
     }
 
     @Override
