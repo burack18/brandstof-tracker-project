@@ -1,12 +1,11 @@
 package com.example.brandstoftracker.service.concrete;
 
 import com.example.brandstoftracker.api.dto.AutoDto;
-import com.example.brandstoftracker.api.dto.mapper.AutoModelMapper;
+import com.example.brandstoftracker.utilities.mapper.AutoModelMapper;
 import com.example.brandstoftracker.dao.AutoRepository;
 import com.example.brandstoftracker.domain.Auto;
 import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundException;
 import com.example.brandstoftracker.service.abstracts.AutoService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

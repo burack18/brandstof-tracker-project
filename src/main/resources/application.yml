@@ -10,4 +10,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL81Dialect
     show-sql: 'true'
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
+jwt:
+  secretkey: secretkey
