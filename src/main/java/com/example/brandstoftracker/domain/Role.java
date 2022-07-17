@@ -1,18 +1,21 @@
 package com.example.brandstoftracker.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
 @Entity
-public class User  {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
+    private long id;
+
     @Column(name = "name")
     private String name;
-    @Column(name = "lastName")
-    private String lastName;
 }

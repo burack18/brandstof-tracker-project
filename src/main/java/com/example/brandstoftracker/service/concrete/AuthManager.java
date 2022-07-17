@@ -1,0 +1,51 @@
+package com.example.brandstoftracker.service.concrete;
+
+import com.example.brandstoftracker.api.dto.LoginRequest;
+import com.example.brandstoftracker.api.dto.LoginResponse;
+import com.example.brandstoftracker.api.dto.RegisterRequest;
+import com.example.brandstoftracker.domain.ApplicationUser;
+import com.example.brandstoftracker.security.JWTTokenProvider;
+import com.example.brandstoftracker.security.UserPrincipalManager;
+import com.example.brandstoftracker.service.abstracts.ApplicationUserService;
+import com.example.brandstoftracker.service.abstracts.AuthService;
+import com.sun.security.auth.UserPrincipal;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+
+@RequiredArgsConstructor
+@Service
+public class AuthManager implements AuthService {
+
+    private final AuthenticationManager manager;
+    private final JWTTokenProvider provider;
+    private final UserPrincipalManager userPrincipalManager;
+    private final PasswordEncoder encoder;
+    private final ApplicationUserService applicationUserService;
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        UsernamePasswordAuthenticationToken token= new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
+        Authentication authenticate = manager.authenticate(token);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        UserDetails userDetails = userPrincipalManager.loadUserByUsername(request.getUsername());
+        String generateJwtToken = provider.generateJwtToken(userDetails);
+        return new LoginResponse("Bearer "+generateJwtToken,userDetails.getAuthorities());
+    }
+
+    @Override
+    public void Register(RegisterRequest request) {
+        ApplicationUser applicationUser=new ApplicationUser();
+        applicationUser.setUserName(request.getUsername());
+        applicationUser.setPassword(encoder.encode(request.getPassword()));
+        applicationUserService.add(applicationUser);
+    }
+}
