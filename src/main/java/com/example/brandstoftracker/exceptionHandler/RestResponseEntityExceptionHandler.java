@@ -2,6 +2,7 @@ package com.example.brandstoftracker.exceptionHandler;
 
 import com.example.brandstoftracker.api.httpResponse.ErrorResponse;
 import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundException;
+import com.example.brandstoftracker.exceptionHandler.exceptions.NotSupportedLanguageException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,13 @@ public class RestResponseEntityExceptionHandler
     @ExceptionHandler(value
             = { NotFoundException.class, NotFoundException.class })
     protected ResponseEntity handleConflictNotFound(
+            RuntimeException ex, WebRequest request) {
+        return new ResponseEntity(new ErrorResponse(ex.getLocalizedMessage()),HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value
+            = { NotSupportedLanguageException.class, NotSupportedLanguageException.class })
+    protected ResponseEntity handleConflictNotFoundLanguage(
             RuntimeException ex, WebRequest request) {
         return new ResponseEntity(new ErrorResponse(ex.getLocalizedMessage()),HttpStatus.NOT_FOUND);
     }

@@ -38,6 +38,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable().cors().and()
                 .exceptionHandling().authenticationEntryPoint(handler)
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests().antMatchers("/**").permitAll()
                 .and().authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .and().authorizeRequests().antMatchers("/api/parkingslots").permitAll()
                 .and().authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
