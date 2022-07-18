@@ -15,6 +15,10 @@ public class AutoModelMapper {
         AutoDto dto = modelMapper.map(auto, AutoDto.class);
         return dto;
     }
+    public Auto convertToAuto(Object obj){
+        Auto auto=modelMapper.map(obj,Auto.class);
+        return auto;
+    }
 
 
 }

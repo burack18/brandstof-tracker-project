@@ -1,6 +1,8 @@
 package com.example.brandstoftracker.service.concrete;
 
+import com.example.brandstoftracker.api.dto.AutoAddRequest;
 import com.example.brandstoftracker.api.dto.AutoDto;
+import com.example.brandstoftracker.api.dto.AutoUpdateRequest;
 import com.example.brandstoftracker.utilities.mapper.AutoModelMapper;
 import com.example.brandstoftracker.dao.AutoRepository;
 import com.example.brandstoftracker.domain.Auto;
@@ -18,9 +20,9 @@ public class AutoManager implements AutoService {
     private final AutoModelMapper modelMapper;
 
     @Override
-    public AutoDto getById(Long id) {
+    public Auto getById(Long id) {
         Auto auto = repository.findById(id).orElseThrow(()->new NotFoundException("Auto not found"));
-        return modelMapper.convertToDto(auto);
+        return auto;
     }
 
     @Override
@@ -29,13 +31,18 @@ public class AutoManager implements AutoService {
     }
 
     @Override
-    public Auto add(Auto auto) {
-        return this.repository.save(auto);
+    public Auto add(AutoAddRequest auto) {
+        Auto savedAuto = modelMapper.convertToAuto(auto);
+        return this.repository.save(savedAuto);
     }
 
     @Override
-    public Auto update(Auto auto) {
-        return this.repository.save(auto);
+    public Auto update(Long id, AutoUpdateRequest auto) {
+        Auto modifiedAuto = this.getById(id);
+        modifiedAuto.setModel(auto.getModel());
+        modifiedAuto.setMerk(auto.getMerk());
+        modifiedAuto.setPlateNumber(auto.getPlateNumber());
+        return this.repository.save(modifiedAuto);
     }
 
     @Override
