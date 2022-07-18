@@ -56,11 +56,11 @@ public class MessageCreater {
             SupportedLanguages value = SupportedLanguages.valueOf(lang.toUpperCase(Locale.ROOT));
             locale=new Locale(value.toString().toLowerCase(Locale.ROOT));
         }catch (IllegalArgumentException e){
-            locale=Locale.FRENCH;
+            locale=Locale.ENGLISH;
         }
         String response="";
         try {
-            response=messageSource.getMessage(code, null,Locale.FRENCH);
+            response=messageSource.getMessage(code, null,locale);
         }catch (NoSuchMessageException e){
             response=code;
         }
