@@ -2,6 +2,7 @@ package com.example.brandstoftracker.api;
 
 import com.example.brandstoftracker.api.dto.AutoAddRequest;
 import com.example.brandstoftracker.api.dto.AutoUpdateRequest;
+import com.example.brandstoftracker.api.httpResponse.DataResponse;
 import com.example.brandstoftracker.api.httpResponse.Response;
 import com.example.brandstoftracker.api.httpResponse.SuccessDataResponse;
 import com.example.brandstoftracker.domain.Auto;
@@ -25,18 +26,18 @@ public class AutoController {
     @GetMapping
     public ResponseEntity getAll(){
         List<Auto> all = this.service.getAll();
-        return  new ResponseEntity(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), all), HttpStatus.OK);
+        return  ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), all));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id){
         Auto auto = this.service.getById(id);
-        return new ResponseEntity(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), auto), HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), auto));
     }
 
     @PostMapping
     public ResponseEntity add(@RequestBody @Valid AutoAddRequest auto){
-        return new ResponseEntity(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), this.service.add(auto)), HttpStatus.CREATED);
+        return new ResponseEntity(new SuccessDataResponse(messageCreater.getMessage("auto.created"), this.service.add(auto)), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

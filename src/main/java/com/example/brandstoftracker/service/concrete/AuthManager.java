@@ -33,10 +33,9 @@ public class AuthManager implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        UsernamePasswordAuthenticationToken token= new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
+        UsernamePasswordAuthenticationToken token= new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword());
         Authentication authenticate = manager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
-        UserDetails userDetails = userPrincipalManager.loadUserByUsername(request.getUsername());
+        UserDetails userDetails = userPrincipalManager.loadUserByUsername(request.getEmail());
         String generateJwtToken = provider.generateJwtToken(userDetails);
         return new LoginResponse("Bearer "+generateJwtToken,userDetails.getAuthorities());
     }
@@ -44,7 +43,9 @@ public class AuthManager implements AuthService {
     @Override
     public void Register(RegisterRequest request) {
         ApplicationUser applicationUser=new ApplicationUser();
-        applicationUser.setUserName(request.getUsername());
+        applicationUser.setFirstName(request.getFirstName());
+        applicationUser.setEmail(request.getEmail());
+        applicationUser.setSurName(request.getLastName());
         applicationUser.setPassword(encoder.encode(request.getPassword()));
         applicationUserService.add(applicationUser);
     }

@@ -26,10 +26,6 @@ public class ApplicationUser  {
     private String surName;
 
     @NotNull
-    @Column(name = "username")
-    private String userName;
-
-    @NotNull
     @Column(name = "password")
     private String password;
 

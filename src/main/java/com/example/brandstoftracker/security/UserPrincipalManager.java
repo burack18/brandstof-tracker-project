@@ -18,8 +18,8 @@ public class UserPrincipalManager implements UserDetailsService {
     private final ApplicationUserRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<ApplicationUser> user=repository.findByUserName(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<ApplicationUser> user=repository.findByEmail(email);
 
         ApplicationUserPrincipal userPrincipal=new ApplicationUserPrincipal(user.orElseThrow(()->new UsernameNotFoundException("notfound")));
         return userPrincipal;

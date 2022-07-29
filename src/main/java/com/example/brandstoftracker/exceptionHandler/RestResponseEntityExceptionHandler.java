@@ -7,6 +7,7 @@ import com.example.brandstoftracker.exceptionHandler.exceptions.NotSupportedLang
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,5 +52,10 @@ public class RestResponseEntityExceptionHandler
             errors.put(fieldName, errorMessage);
         });
         return new ResponseEntity(new ErrorDataResponse("Validation Error",errors),HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(value = { BadCredentialsException.class, BadCredentialsException.class })
+    protected ResponseEntity handleConflictBadCredentials(
+            RuntimeException ex, WebRequest request) {
+        return new ResponseEntity(new ErrorResponse(ex.getLocalizedMessage()),HttpStatus.UNAUTHORIZED);
     }
 }
