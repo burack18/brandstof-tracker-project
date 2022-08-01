@@ -56,6 +56,6 @@ public class RestResponseEntityExceptionHandler
     @ExceptionHandler(value = { BadCredentialsException.class, BadCredentialsException.class })
     protected ResponseEntity handleConflictBadCredentials(
             RuntimeException ex, WebRequest request) {
-        return new ResponseEntity(new ErrorResponse(ex.getLocalizedMessage()),HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity(new ErrorResponse(ex.getMessage()),HttpStatus.UNAUTHORIZED);
     }
 }

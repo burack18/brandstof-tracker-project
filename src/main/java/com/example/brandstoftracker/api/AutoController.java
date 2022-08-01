@@ -6,6 +6,7 @@ import com.example.brandstoftracker.api.httpResponse.DataResponse;
 import com.example.brandstoftracker.api.httpResponse.Response;
 import com.example.brandstoftracker.api.httpResponse.SuccessDataResponse;
 import com.example.brandstoftracker.domain.Auto;
+import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundException;
 import com.example.brandstoftracker.service.abstracts.AutoService;
 import com.example.brandstoftracker.utilities.languageLocalization.MessageCreater;
 import lombok.AllArgsConstructor;

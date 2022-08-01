@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService service;
 
     @PostMapping("/login")
@@ -26,11 +27,9 @@ public class AuthController {
     {
         return new ResponseEntity(new SuccessDataResponse("Login Successfull",this.service.login(loginRequest)),HttpStatus.OK);
     }
-
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequest request){
         service.Register(request);
         return new ResponseEntity(new Response("Register Successfull"), HttpStatus.CREATED);
     }
-
 }
