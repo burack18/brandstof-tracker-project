@@ -1,8 +1,8 @@
 package com.example.brandstoftracker.api.dto;
 
+import com.example.brandstoftracker.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
@@ -10,5 +10,8 @@ import java.util.Collection;
 @AllArgsConstructor
 public class LoginResponse {
     private String token;
-    private Collection<? extends GrantedAuthority> authorities;
+    private Collection<Role> authorities;
+    private String userName;
+    private String firstName;
+    private String surName;
 }

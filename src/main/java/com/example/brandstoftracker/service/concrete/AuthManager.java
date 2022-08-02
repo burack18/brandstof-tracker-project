@@ -4,6 +4,7 @@ import com.example.brandstoftracker.api.dto.LoginRequest;
 import com.example.brandstoftracker.api.dto.LoginResponse;
 import com.example.brandstoftracker.api.dto.RegisterRequest;
 import com.example.brandstoftracker.domain.ApplicationUser;
+import com.example.brandstoftracker.security.ApplicationUserPrincipal;
 import com.example.brandstoftracker.security.JWTTokenProvider;
 import com.example.brandstoftracker.security.UserPrincipalManager;
 import com.example.brandstoftracker.service.abstracts.ApplicationUserService;
@@ -36,9 +37,11 @@ public class AuthManager implements AuthService {
     public LoginResponse login(LoginRequest request) {
         UsernamePasswordAuthenticationToken token= new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword());
         Authentication authenticate = manager.authenticate(token);
-        UserDetails userDetails = userPrincipalManager.loadUserByUsername(request.getEmail());
+        ApplicationUserPrincipal userDetails = (ApplicationUserPrincipal) userPrincipalManager.loadUserByUsername(request.getEmail());
+        ApplicationUser applicationUser=userDetails.getApplicationUser();
         String generateJwtToken = provider.generateJwtToken(userDetails);
-        return new LoginResponse("Bearer "+generateJwtToken,userDetails.getAuthorities());
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        return new LoginResponse("Bearer "+generateJwtToken, applicationUser.getRoles(),applicationUser.getEmail(),applicationUser.getFirstName(),applicationUser.getSurName());
     }
 
     @Override
