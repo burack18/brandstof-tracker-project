@@ -16,4 +16,8 @@ public class AutoUpdateRequest {
     private String merk;
     @NotBlank(message = "{validation.model}")
     private String model;
+    @NotBlank(message = "{validation.model}")
+    private Integer yearOfConstruction;
+    @NotBlank(message = "{validation.model}")
+    private Long tankVolume;
 }

@@ -2,10 +2,14 @@ package com.example.brandstoftracker.api;
 
 import com.example.brandstoftracker.api.dto.AutoAddRequest;
 import com.example.brandstoftracker.api.dto.AutoUpdateRequest;
+import com.example.brandstoftracker.api.dto.autousageDtos.AutoUsageAddRequest;
+import com.example.brandstoftracker.api.dto.brandstofDtos.BrandStofAddRequest;
 import com.example.brandstoftracker.api.httpResponse.DataResponse;
 import com.example.brandstoftracker.api.httpResponse.Response;
 import com.example.brandstoftracker.api.httpResponse.SuccessDataResponse;
 import com.example.brandstoftracker.domain.Auto;
+import com.example.brandstoftracker.domain.AutoUsage;
+import com.example.brandstoftracker.domain.BrandStof;
 import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundException;
 import com.example.brandstoftracker.service.abstracts.AutoService;
 import com.example.brandstoftracker.utilities.languageLocalization.MessageCreater;
@@ -50,5 +54,27 @@ public class AutoController {
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable Long id,@RequestBody @Valid AutoUpdateRequest request){
         return new ResponseEntity(new SuccessDataResponse(messageCreater.getMessage("auto.update"),this.service.update(id,request)),HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{autoid}/brandstofs")
+    public ResponseEntity getBrandStofsByAutoId(@PathVariable Long autoid){
+        List<BrandStof> brandStofList = this.service.getBrandStofsByAutoId(autoid);
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), brandStofList));
+    }
+    @PostMapping("/{autoid}/brandstofs")
+    public ResponseEntity addBrandStoftofToAuto(@PathVariable Long autoid ,@RequestBody BrandStofAddRequest brandStof){
+        BrandStof addedBrandStof = this.service.addBrandStofToAuto(autoid,brandStof);
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), addedBrandStof));
+    }
+    @GetMapping("/{autoid}/auto-usages")
+    public ResponseEntity getAutoUsagesByAutoId(@PathVariable Long autoid){
+        List<AutoUsage> autoUsages = this.service.getAutoUsagesByAutoId(autoid);
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), autoUsages));
+    }
+
+    @PostMapping("/{autoid}/auto-usages")
+    public ResponseEntity addAutoUsageToAuto(@PathVariable Long autoid,@RequestBody AutoUsageAddRequest autoUsageAddRequest){
+        AutoUsage addedAutoUsage = this.service.addAutoUsageToAuto(autoid,autoUsageAddRequest);
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), addedAutoUsage));
     }
 }

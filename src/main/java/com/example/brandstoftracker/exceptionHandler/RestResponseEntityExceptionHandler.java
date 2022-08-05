@@ -2,6 +2,7 @@ package com.example.brandstoftracker.exceptionHandler;
 
 import com.example.brandstoftracker.api.httpResponse.ErrorDataResponse;
 import com.example.brandstoftracker.api.httpResponse.ErrorResponse;
+import com.example.brandstoftracker.exceptionHandler.exceptions.InsufficientException;
 import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundException;
 import com.example.brandstoftracker.exceptionHandler.exceptions.NotSupportedLanguageException;
 import org.springframework.http.HttpHeaders;
@@ -57,5 +58,10 @@ public class RestResponseEntityExceptionHandler
     protected ResponseEntity handleConflictBadCredentials(
             RuntimeException ex, WebRequest request) {
         return new ResponseEntity(new ErrorResponse(ex.getMessage()),HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(value = { InsufficientException.class, InsufficientException.class })
+    protected ResponseEntity handleConflictInsufficientException(
+            RuntimeException ex, WebRequest request) {
+        return new ResponseEntity(new ErrorResponse(ex.getMessage()),HttpStatus.BAD_REQUEST);
     }
 }

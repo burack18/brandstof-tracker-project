@@ -22,7 +22,22 @@ public class Auto {
     @Column(name = "model")
     private String model;
 
+    @Column(name = "tank_volume")
+    private Long tankVolume;
+
+    @Column(name = "available_brand_stof")
+    private Long availableBrandStof;
+
+    @Column(name = "year_of_construction")
+    private Integer  yearOfConstruction;
+
+
     @OneToMany(mappedBy = "assignedAuto")
     @JsonIgnore
-    private List<KmHistory> kmHistoryList;
+    private List<AutoUsage> autoUsageList;
+
+    @OneToMany(mappedBy = "assignedAuto")
+    @JsonIgnore
+    private List<BrandStof> brandStofList;
+
 }
