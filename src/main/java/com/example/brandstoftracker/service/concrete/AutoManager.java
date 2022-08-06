@@ -55,6 +55,8 @@ public class AutoManager implements AutoService {
         modifiedAuto.setModel(auto.getModel());
         modifiedAuto.setMerk(auto.getMerk());
         modifiedAuto.setPlateNumber(auto.getPlateNumber());
+        modifiedAuto.setTankVolume(auto.getTankVolume());
+        modifiedAuto.setYearOfConstruction(auto.getYearOfConstruction());
         return this.repository.save(modifiedAuto);
     }
 

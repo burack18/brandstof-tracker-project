@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -16,8 +17,8 @@ public class AutoUpdateRequest {
     private String merk;
     @NotBlank(message = "{validation.model}")
     private String model;
-    @NotBlank(message = "{validation.model}")
+    @NotNull(message = "{validation.model}")
     private Integer yearOfConstruction;
-    @NotBlank(message = "{validation.model}")
+    @NotNull(message = "{validation.model}")
     private Long tankVolume;
 }
