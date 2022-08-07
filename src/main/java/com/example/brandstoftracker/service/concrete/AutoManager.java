@@ -4,10 +4,14 @@ import com.example.brandstoftracker.api.dto.AutoAddRequest;
 import com.example.brandstoftracker.api.dto.AutoDto;
 import com.example.brandstoftracker.api.dto.AutoUpdateRequest;
 import com.example.brandstoftracker.api.dto.autousageDtos.AutoUsageAddRequest;
+import com.example.brandstoftracker.api.dto.autousageDtos.TotalAutoUsageResponse;
 import com.example.brandstoftracker.api.dto.brandstofDtos.BrandStofAddRequest;
+import com.example.brandstoftracker.api.dto.brandstofDtos.TotalCostResponse;
+import com.example.brandstoftracker.domain.ApplicationUser;
 import com.example.brandstoftracker.domain.AutoUsage;
 import com.example.brandstoftracker.domain.BrandStof;
 import com.example.brandstoftracker.exceptionHandler.exceptions.InsufficientException;
+import com.example.brandstoftracker.service.abstracts.ApplicationUserService;
 import com.example.brandstoftracker.service.abstracts.AutoUsageService;
 import com.example.brandstoftracker.service.abstracts.BrandStofService;
 import com.example.brandstoftracker.utilities.mapper.AutoModelMapper;
@@ -16,11 +20,16 @@ import com.example.brandstoftracker.domain.Auto;
 import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundException;
 import com.example.brandstoftracker.service.abstracts.AutoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import javax.persistence.Tuple;
 import javax.xml.bind.ValidationException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,6 +40,7 @@ public class AutoManager implements AutoService {
     private final AutoModelMapper modelMapper;
     private final BrandStofService brandStofManager;
     private final AutoUsageService autoUsageService;
+    private final ApplicationUserService userService;
 
     @Override
     public Auto getById(Long id) {
@@ -40,12 +50,16 @@ public class AutoManager implements AutoService {
 
     @Override
     public List<Auto> getAll() {
-        return this.repository.findAll();
+        ApplicationUser user = getContextUser();
+        List<Auto> allAutosAssignedToUser = this.repository.findAllByAssignedUser_UserId(user.getUserId());
+        return allAutosAssignedToUser;
     }
 
     @Override
     public Auto add(AutoAddRequest auto) {
         Auto savedAuto = modelMapper.convertToAuto(auto);
+        ApplicationUser user = getContextUser();
+        savedAuto.setAssignedUser(user);
         return this.repository.save(savedAuto);
     }
 
@@ -109,5 +123,31 @@ public class AutoManager implements AutoService {
         autoUsage.setDistance(autoUsageAddRequest.getDistance());
         autoUsage.setAssignedAuto(auto);
         return this.autoUsageService.add(autoUsage);
+    }
+
+    @Override
+    public TotalCostResponse getTotalBrandstofCostByAutoId(Long autoid, LocalDate date) {
+        return this.brandStofManager.getTotalCost(autoid,date);
+    }
+
+    @Override
+    public TotalCostResponse getTotalBrandstofCostByAutoIdAllTime(Long autoid) {
+        return this.brandStofManager.getTotalCostAlltime(autoid);
+    }
+
+    @Override
+    public TotalAutoUsageResponse getTotalCostAllTime(Long autoId) {
+        return this.autoUsageService.getTotalCostAllTime(autoId);
+    }
+
+    @Override
+    public TotalAutoUsageResponse getTotalAutoUsageCostByAutoIdAllTime(Long autoid, LocalDate date) {
+        return this.autoUsageService.getTotalAutoUsageCostByAutoIdAllTime(autoid,date);
+    }
+
+    public ApplicationUser getContextUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ApplicationUser user = userService.findByEmail(authentication.getName());
+        return user;
     }
 }

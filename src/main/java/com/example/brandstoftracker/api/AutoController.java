@@ -3,7 +3,9 @@ package com.example.brandstoftracker.api;
 import com.example.brandstoftracker.api.dto.AutoAddRequest;
 import com.example.brandstoftracker.api.dto.AutoUpdateRequest;
 import com.example.brandstoftracker.api.dto.autousageDtos.AutoUsageAddRequest;
+import com.example.brandstoftracker.api.dto.autousageDtos.TotalAutoUsageResponse;
 import com.example.brandstoftracker.api.dto.brandstofDtos.BrandStofAddRequest;
+import com.example.brandstoftracker.api.dto.brandstofDtos.TotalCostResponse;
 import com.example.brandstoftracker.api.httpResponse.DataResponse;
 import com.example.brandstoftracker.api.httpResponse.Response;
 import com.example.brandstoftracker.api.httpResponse.SuccessDataResponse;
@@ -14,11 +16,15 @@ import com.example.brandstoftracker.exceptionHandler.exceptions.NotFoundExceptio
 import com.example.brandstoftracker.service.abstracts.AutoService;
 import com.example.brandstoftracker.utilities.languageLocalization.MessageCreater;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Tuple;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -76,5 +82,25 @@ public class AutoController {
     public ResponseEntity addAutoUsageToAuto(@PathVariable Long autoid,@RequestBody AutoUsageAddRequest autoUsageAddRequest){
         AutoUsage addedAutoUsage = this.service.addAutoUsageToAuto(autoid,autoUsageAddRequest);
         return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), addedAutoUsage));
+    }
+    @GetMapping("/{autoid}/brandstofs/totalcost")
+    public ResponseEntity getBrandStofsCostByAutoId(@PathVariable Long autoid, @RequestParam(name = "date",required = false)@DateTimeFormat(pattern="MM/dd/yyyy") LocalDate date){
+        TotalCostResponse totalCostResponse;
+        if(date!=null)
+        { totalCostResponse = this.service.getTotalBrandstofCostByAutoId(autoid,date);}
+        else{
+            totalCostResponse=this.service.getTotalBrandstofCostByAutoIdAllTime(autoid);
+        }
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), totalCostResponse));
+    }
+    @GetMapping("/{autoid}/auto-usages/totalcost")
+    public ResponseEntity getAutoUsageCostByAutoId(@PathVariable Long autoid, @RequestParam(name = "date",required = false)@DateTimeFormat(pattern="MM/dd/yyyy") LocalDate date){
+        TotalAutoUsageResponse totalCostResponse;
+        if(date!=null)
+            { totalCostResponse = this.service.getTotalAutoUsageCostByAutoIdAllTime(autoid,date);}
+        else{
+            totalCostResponse=this.service.getTotalCostAllTime(autoid);
+        }
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), totalCostResponse));
     }
 }

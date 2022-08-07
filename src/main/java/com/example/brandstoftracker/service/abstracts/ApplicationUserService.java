@@ -5,4 +5,5 @@ import com.example.brandstoftracker.domain.ApplicationUser;
 
 public interface ApplicationUserService {
     ApplicationUser add(ApplicationUser user);
+    ApplicationUser findByEmail(String email);
 }

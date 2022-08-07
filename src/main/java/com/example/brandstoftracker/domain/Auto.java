@@ -40,4 +40,8 @@ public class Auto {
     @JsonIgnore
     private List<BrandStof> brandStofList;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private ApplicationUser assignedUser;
+
 }
