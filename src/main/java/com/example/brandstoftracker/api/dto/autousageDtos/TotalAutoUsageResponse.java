@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TotalAutoUsageResponse {
     private Long totalDistance;
     private Long countOfUsage;

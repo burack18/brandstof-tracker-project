@@ -14,4 +14,7 @@ public interface AutoUsageService {
     TotalAutoUsageResponse getTotalCostAllTime(@Param("autoId")Long autoId);
 
     TotalAutoUsageResponse getTotalAutoUsageCostByAutoIdAllTime(Long autoid, LocalDate date);
+
+    TotalAutoUsageResponse getTotalAutoUsageCostAllTime(LocalDate date);
+    TotalAutoUsageResponse getTotalAutoUsageCostAllTime();
 }

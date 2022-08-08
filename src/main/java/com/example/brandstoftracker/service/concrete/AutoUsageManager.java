@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -46,6 +47,19 @@ public class AutoUsageManager implements AutoUsageService {
     public TotalAutoUsageResponse getTotalAutoUsageCostByAutoIdAllTime(Long autoid, LocalDate date) {
         ApplicationUser user = getContextUser();
         return this.repository.getTotalAutoUsageCostByAutoIdAllTime(autoid,user.getUserId(),date);
+    }
+
+    @Override
+    public TotalAutoUsageResponse getTotalAutoUsageCostAllTime(LocalDate date) {
+        ApplicationUser user = getContextUser();
+        return this.repository.getTotalAutoUsageCostAllTime(user.getUserId(),date);
+    }
+
+    @Override
+    public TotalAutoUsageResponse getTotalAutoUsageCostAllTime() {
+        ApplicationUser user = getContextUser();
+        TotalAutoUsageResponse totalAutoUsageCostAllTime = this.repository.getTotalAutoUsageCostAllTime(user.getUserId());
+        return totalAutoUsageCostAllTime;
     }
 
     public ApplicationUser getContextUser(){
