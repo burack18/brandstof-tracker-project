@@ -32,11 +32,12 @@ public class Auto {
     private Integer  yearOfConstruction;
 
 
-    @OneToMany(mappedBy = "assignedAuto")
+
+    @OneToMany(mappedBy = "assignedAuto",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<AutoUsage> autoUsageList;
 
-    @OneToMany(mappedBy = "assignedAuto")
+    @OneToMany(mappedBy = "assignedAuto",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<BrandStof> brandStofList;
 
