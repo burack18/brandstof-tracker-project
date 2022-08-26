@@ -4,11 +4,13 @@ import com.example.brandstoftracker.api.dto.LoginRequest;
 import com.example.brandstoftracker.api.dto.LoginResponse;
 import com.example.brandstoftracker.api.dto.RegisterRequest;
 import com.example.brandstoftracker.domain.ApplicationUser;
+import com.example.brandstoftracker.domain.Role;
 import com.example.brandstoftracker.security.ApplicationUserPrincipal;
 import com.example.brandstoftracker.security.JWTTokenProvider;
 import com.example.brandstoftracker.security.UserPrincipalManager;
 import com.example.brandstoftracker.service.abstracts.ApplicationUserService;
 import com.example.brandstoftracker.service.abstracts.AuthService;
+import com.example.brandstoftracker.service.abstracts.RoleService;
 import com.sun.security.auth.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +34,7 @@ public class AuthManager implements AuthService {
     private final UserPrincipalManager userPrincipalManager;
     private final PasswordEncoder encoder;
     private final ApplicationUserService applicationUserService;
+    private final RoleService roleService;
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -46,11 +49,14 @@ public class AuthManager implements AuthService {
 
     @Override
     public void Register(RegisterRequest request) {
+        //Default role ADMIN
+        Role role=roleService.getByName("admin");
         ApplicationUser applicationUser=new ApplicationUser();
         applicationUser.setFirstName(request.getFirstName());
         applicationUser.setEmail(request.getEmail());
         applicationUser.setSurName(request.getLastName());
         applicationUser.setPassword(encoder.encode(request.getPassword()));
+        applicationUser.getRoles().add(role);
         applicationUserService.add(applicationUser);
     }
 }
