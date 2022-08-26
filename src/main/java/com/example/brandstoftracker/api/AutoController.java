@@ -65,23 +65,23 @@ public class AutoController {
     @GetMapping("/{autoid}/brandstofs")
     public ResponseEntity getBrandStofsByAutoId(@PathVariable Long autoid){
         List<BrandStof> brandStofList = this.service.getBrandStofsByAutoId(autoid);
-        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), brandStofList));
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("brandstof.listed"), brandStofList));
     }
     @PostMapping("/{autoid}/brandstofs")
     public ResponseEntity addBrandStoftofToAuto(@PathVariable Long autoid ,@RequestBody BrandStofAddRequest brandStof){
         BrandStof addedBrandStof = this.service.addBrandStofToAuto(autoid,brandStof);
-        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), addedBrandStof));
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("brandstof.added"), addedBrandStof));
     }
     @GetMapping("/{autoid}/auto-usages")
     public ResponseEntity getAutoUsagesByAutoId(@PathVariable Long autoid){
         List<AutoUsage> autoUsages = this.service.getAutoUsagesByAutoId(autoid);
-        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), autoUsages));
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("autousages.listed"), autoUsages));
     }
 
     @PostMapping("/{autoid}/auto-usages")
     public ResponseEntity addAutoUsageToAuto(@PathVariable Long autoid,@RequestBody AutoUsageAddRequest autoUsageAddRequest){
         AutoUsage addedAutoUsage = this.service.addAutoUsageToAuto(autoid,autoUsageAddRequest);
-        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("auto.listed"), addedAutoUsage));
+        return ResponseEntity.ok(new SuccessDataResponse(messageCreater.getMessage("autousage.added"), addedAutoUsage));
     }
     @GetMapping("/{autoid}/brandstofs/totalcost")
     public ResponseEntity getBrandStofsCostByAutoId(@PathVariable Long autoid, @RequestParam(name = "date",required = false)@DateTimeFormat(pattern="MM/dd/yyyy") LocalDate date){

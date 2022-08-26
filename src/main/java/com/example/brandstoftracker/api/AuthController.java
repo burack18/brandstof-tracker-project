@@ -7,6 +7,7 @@ import com.example.brandstoftracker.api.dto.RegisterRequest;
 import com.example.brandstoftracker.api.httpResponse.Response;
 import com.example.brandstoftracker.api.httpResponse.SuccessDataResponse;
 import com.example.brandstoftracker.service.abstracts.AuthService;
+import com.example.brandstoftracker.utilities.languageLocalization.MessageCreater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService service;
+    private final MessageCreater messageCreater;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequest loginRequest)
     {
-        return new ResponseEntity(new SuccessDataResponse("Login Successfull",this.service.login(loginRequest)),HttpStatus.OK);
+        return new ResponseEntity(new SuccessDataResponse(messageCreater.getMessage("login"),this.service.login(loginRequest)),HttpStatus.OK);
     }
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequest request){
         service.Register(request);
-        return new ResponseEntity(new Response("Register Successfull"), HttpStatus.CREATED);
+        return new ResponseEntity(new Response(messageCreater.getMessage("register")), HttpStatus.CREATED);
     }
 }

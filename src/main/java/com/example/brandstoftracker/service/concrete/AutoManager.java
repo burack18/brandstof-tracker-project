@@ -90,7 +90,7 @@ public class AutoManager implements AutoService {
     public BrandStof addBrandStofToAuto(Long autoid, BrandStofAddRequest brandStof) {
         Auto auto=getById(autoid);
         Long availableBrandStof=auto.getAvailableBrandStof();
-        if(availableBrandStof!=null&&availableBrandStof+brandStof.getBrandStofAmount()>auto.getTankVolume()){
+        if((availableBrandStof!=null&&availableBrandStof+brandStof.getBrandStofAmount()>auto.getTankVolume())||brandStof.getBrandStofAmount()>auto.getTankVolume()){
             throw new InsufficientException("Tank volume is insufficient");
         }
         if(availableBrandStof!=null)auto.setAvailableBrandStof(brandStof.getBrandStofAmount()+availableBrandStof);

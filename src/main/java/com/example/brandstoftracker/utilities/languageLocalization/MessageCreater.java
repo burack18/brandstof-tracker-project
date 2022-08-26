@@ -23,18 +23,13 @@ public class MessageCreater {
 
         String lang="";
         Locale locale=resolver.resolveLocale(request);
-        Enumeration<String> headers = request.getHeaders("Accept-Language");
+        Enumeration<String> headers = request.getHeaders("acceptLanguage");
         try {
             lang=headers.nextElement();
         }catch (Exception exception){
             lang=locale.getLanguage();
         }
-        try {
-            SupportedLanguages value = SupportedLanguages.valueOf(lang.toUpperCase(Locale.ROOT));
-            locale=new Locale(value.toString().toLowerCase(Locale.ROOT));
-        }catch (IllegalArgumentException e){
-            throw new NotSupportedLanguageException(lang+" is not supported language");
-        }
+            locale=new Locale(lang);
         String response="";
         try {
             response=messageSource.getMessage(code, args,locale);
@@ -46,18 +41,13 @@ public class MessageCreater {
     public String getMessage(String code){
         String lang="";
         Locale locale=resolver.resolveLocale(request);
-        Enumeration<String> headers = request.getHeaders("Accept-Language");
+        Enumeration<String> headers = request.getHeaders("acceptLanguage");
         try {
             lang=headers.nextElement();
         }catch (Exception exception){
             lang=locale.getLanguage();
         }
-        try {
-            SupportedLanguages value = SupportedLanguages.valueOf(lang.toUpperCase(Locale.ROOT));
-            locale=new Locale(value.toString().toLowerCase(Locale.ROOT));
-        }catch (IllegalArgumentException e){
-            locale=Locale.ENGLISH;
-        }
+            locale=new Locale(lang);
         String response="";
         try {
             response=messageSource.getMessage(code, null,locale);
